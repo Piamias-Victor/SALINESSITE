@@ -28,7 +28,7 @@ export function Header() {
           
           {/* Navigation - Desktop */}
           <nav className="hidden md:flex items-center space-x-8">
-            {["Accueil", "Présentation", "Services", "Contact"].map((item, index) => (
+            {["Accueil", "Services", "Quiz", "Blog"].map((item, index) => (
               <Link 
                 key={item} 
                 href={item === "Accueil" ? "/" : `/${item.toLowerCase()}`}
@@ -89,14 +89,14 @@ export function Header() {
           >
             <div className="container px-4 py-6">
               <nav className="flex flex-col space-y-4">
-                {["Accueil", "Présentation", "Services", "Contact"].map((item) => (
+                {["Accueil", "Services", "Quiz", "Blog"].map((item, index) => (
                   <Link 
-                    key={item}
+                    key={item} 
                     href={item === "Accueil" ? "/" : `/${item.toLowerCase()}`}
-                    className="py-2 text-[#404E55] font-medium hover:text-[#E61B80] transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
+                    className="relative text-[#404E55] font-medium text-sm tracking-wide hover:text-[#E61B80] transition-colors group"
                   >
                     {item}
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#E61B80] transition-all duration-300 group-hover:w-full"></span>
                   </Link>
                 ))}
                 <PharmacyButton 

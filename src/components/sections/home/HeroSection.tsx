@@ -1,50 +1,66 @@
 // src/components/sections/home/HeroSection.tsx
+import { useState } from "react";
 import { PharmacyButton } from "@/components/ui/pharmacy-button";
 import { motion } from "framer-motion";
-import { ShoppingBag, Calendar, Award, Heart, Clock, MapPin } from "lucide-react";
+import { ShoppingBag, Calendar, Award, Heart, Clock, MapPin, Phone } from "lucide-react";
+import { AppointmentBooking } from "../appointment/AppointmentBooking";
 
 export const HeroSection = () => {
+  const [isAppointmentOpen, setIsAppointmentOpen] = useState(false);
+
   return (
-    <section className="relative overflow-hidden pt-8 pb-16 md:pt-12 md:pb-24">
-      {/* Background gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white via-white to-[#fff5fa] -z-10" />
-      
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Mobile Quick Actions */}
-        <div className="md:hidden mb-8">
-          <div className="grid grid-cols-2 gap-3">
-            <a 
-              href="tel:0495222831" 
-              className="flex items-center justify-center space-x-2 bg-white rounded-lg py-3 px-4 shadow-md shadow-[#E61B80]/10 border border-[#E61B80]/10"
-            >
-              <Phone size={18} className="text-[#E61B80]" />
-              <span className="font-medium text-[#404E55]">Appeler</span>
-            </a>
-            <a 
-              href="https://maps.google.com/?q=Parking+FNAC,+Cr+Prince+Impérial,+20090+Ajaccio" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center justify-center space-x-2 bg-white rounded-lg py-3 px-4 shadow-md shadow-[#E61B80]/10 border border-[#E61B80]/10"
-            >
-              <MapPin size={18} className="text-[#E61B80]" />
-              <span className="font-medium text-[#404E55]">Itinéraire</span>
-            </a>
+    <>
+      <section className="relative overflow-hidden pt-8 pb-16 md:pt-12 md:pb-24">
+        {/* Background gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-white to-[#fff5fa] -z-10" />
+        
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Mobile Quick Actions */}
+          <div className="md:hidden mb-8">
+            <div className="grid grid-cols-2 gap-3">
+              <a 
+                href="tel:0495222831" 
+                className="flex items-center justify-center space-x-2 bg-white rounded-lg py-3 px-4 shadow-md shadow-[#E61B80]/10 border border-[#E61B80]/10"
+              >
+                <Phone size={18} className="text-[#E61B80]" />
+                <span className="font-medium text-[#404E55]">Appeler</span>
+              </a>
+              <a 
+                href="https://maps.google.com/?q=Parking+FNAC,+Cr+Prince+Impérial,+20090+Ajaccio" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center justify-center space-x-2 bg-white rounded-lg py-3 px-4 shadow-md shadow-[#E61B80]/10 border border-[#E61B80]/10"
+              >
+                <MapPin size={18} className="text-[#E61B80]" />
+                <span className="font-medium text-[#404E55]">Itinéraire</span>
+              </a>
+            </div>
+          </div>
+          
+          <div className="grid md:grid-cols-12 gap-8 lg:gap-12 items-center">
+            {/* Content Column */}
+            <HeroContent onOpenAppointment={() => setIsAppointmentOpen(true)} />
+            
+            {/* Image Column */}
+            <HeroImage />
           </div>
         </div>
-        
-        <div className="grid md:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* Content Column */}
-          <HeroContent />
-          
-          {/* Image Column */}
-          <HeroImage />
-        </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Modal de prise de RDV */}
+      <AppointmentBooking 
+        isOpen={isAppointmentOpen}
+        onClose={() => setIsAppointmentOpen(false)}
+      />
+    </>
   );
 };
 
-const HeroContent = () => {
+interface HeroContentProps {
+  onOpenAppointment: () => void;
+}
+
+const HeroContent = ({ onOpenAppointment }: HeroContentProps) => {
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -64,20 +80,25 @@ const HeroContent = () => {
         Notre équipe pharmaceutique vous accompagne quotidiennement avec des conseils personnalisés et des produits sélectionnés avec soin.
       </p>
       
-      <HeroButtons />
+      <HeroButtons onOpenAppointment={onOpenAppointment} />
       <HeroMobileInfo />
       <HeroDesktopInfo />
     </motion.div>
   );
 };
 
-const HeroButtons = () => {
+interface HeroButtonsProps {
+  onOpenAppointment: () => void;
+}
+
+const HeroButtons = ({ onOpenAppointment }: HeroButtonsProps) => {
   return (
     <div className="flex flex-wrap gap-3 pt-2">
       <PharmacyButton 
         size="default" 
         className="w-full sm:w-auto"
         iconRight={<Calendar size={18} />}
+        onClick={onOpenAppointment}
       >
         Prendre rendez-vous
       </PharmacyButton>
@@ -170,5 +191,3 @@ const HeroImage = () => {
     </motion.div>
   );
 };
-
-import { Phone } from "lucide-react";
